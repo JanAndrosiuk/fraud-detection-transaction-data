@@ -1,0 +1,26 @@
+Imputing numerical data
+[IterativeImputer] Completing matrix with shape (144233, 362)
+[IterativeImputer] Ending imputation round 1/10, elapsed time 3169.16
+[IterativeImputer] Change: 52041726.19083266, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 2/10, elapsed time 6381.02
+[IterativeImputer] Change: 5.449690839177284e+21, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 3/10, elapsed time 9853.42
+[IterativeImputer] Change: 3.622496095972278e+20, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 4/10, elapsed time 13271.11
+[IterativeImputer] Change: 3.5005970498086784e+20, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 5/10, elapsed time 16660.85
+[IterativeImputer] Change: 8.75814878040299e+19, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 6/10, elapsed time 20082.61
+[IterativeImputer] Change: 1.0402179870564191e+20, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 7/10, elapsed time 23557.94
+[IterativeImputer] Change: 5.392993776358658e+20, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 8/10, elapsed time 27047.07
+[IterativeImputer] Change: 4.068395822581989e+19, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 9/10, elapsed time 30449.51
+[IterativeImputer] Change: 1.3411845563233932e+21, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 10/10, elapsed time 33865.51
+[IterativeImputer] Change: 6.068908905860055e+19, scaled tolerance: 641.5114375 
+/usr/local/lib/python3.7/dist-packages/sklearn/impute/_iterative.py:701: ConvergenceWarning: [IterativeImputer] Early stopping criterion not reached.
+  ConvergenceWarning,
+Saving imputed data
+0
