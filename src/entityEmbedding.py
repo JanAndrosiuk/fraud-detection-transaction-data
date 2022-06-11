@@ -15,7 +15,9 @@ import pickle
 
 
 class EntityEmbeddings:
-    def __init__(self, imp_datasets=None, imp_datasets_path=r"export/", pattern=r"df_train_imputed", load_pickle=False):
+
+    def __init__(self, imp_datasets=None, imp_datasets_path="../data/interim/", df_pattern="ieee_train_imputed",
+                 data_types_path="ieee_train_dtypes.pkl", load_pickle=False):
 
         self.target = ["isFraud"]
         self.cat_cols = [
@@ -27,27 +29,28 @@ class EntityEmbeddings:
         self.dataset_list = []
 
         # Load variables data types
-        with open(imp_datasets_path+r"train_dtypes.pkl", 'rb') as handle:
+        with open(imp_datasets_path+data_types_path, "rb") as handle:
             dtypes_dict = pickle.load(handle)
 
-        # if imputed datasets were passed as the argument
+        # if imputed datasets were passed as the argument from kds (miceforest) object
         if imp_datasets is not None:
             for i in range(imp_datasets.dataset_count()):
                 self.dataset_list.append(imp_datasets.complete_data(dataset=i, inplace=False).astype(dtypes_dict))
 
-        # if imputed datasets should be loaded from drive
+        # if imputed datasets should be loaded from drive using pandas read_csv() method
         elif not load_pickle and imp_datasets is None:
             # Search for imputed datasets
             path_list = os.listdir(imp_datasets_path)
-            path_list = list(filter(re.compile(pattern).match, path_list))
+            path_list = list(filter(re.compile(df_pattern).match, path_list))
 
             # Append those datasets to list
             for p in path_list:
                 self.dataset_list.append(pd.read_csv(imp_datasets_path+p).astype(dtypes_dict))
 
+        # if imputed datasets should be loaded from drive using pickle load() method
         elif load_pickle and imp_datasets is None:
             path_list = os.listdir(imp_datasets_path)
-            path_list = list(filter(re.compile(pattern).match, path_list))
+            path_list = list(filter(re.compile(df_pattern).match, path_list))
 
             for p in path_list:
                 # print(imp_datasets_path+p)
@@ -212,9 +215,9 @@ class EntityEmbeddings:
                     print(f"{c} dim: {len(embedding_dict[c][0])}")
 
             if save_dicts:
-                if not os.path.exists(r"export"):
-                    os.mkdir(r"export")
-                with open(f"export/embedding_dict_{i}.pkl", 'wb') as handle:
+                if not os.path.exists("../models/"):
+                    os.mkdir("../models/")
+                with open(f"../models/ieee_embedding_dict_{i}.pkl", 'wb') as handle:
                     pickle.dump(embedding_dict, handle)
 
         return 0
@@ -222,7 +225,7 @@ class EntityEmbeddings:
     def transform_cat_features(self, save_dataframe=True):
         for i in range(len(self.dataset_list)):
 
-            with open(f"export/embedding_dict_{i}.pkl", 'rb') as handle:
+            with open(f"../models/ieee_embedding_dict_{i}.pkl", "rb") as handle:
                 embedding_dict = pickle.load(handle)
 
             cat_emb_list = []
@@ -241,9 +244,9 @@ class EntityEmbeddings:
                 )
 
                 if save_dataframe:
-                    if not os.path.exists(r"export"):
-                        os.mkdir(r"export")
-                    with open(f"export/X_final_{i}.pkl", "wb") as h:
+                    if not os.path.exists("../data/processed"):
+                        os.mkdir("../data/processed")
+                    with open(f"../data/processed/ieee_train_final_{i}.pkl", "wb") as h:
                         pickle.dump(X_final, h, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0

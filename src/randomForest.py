@@ -10,8 +10,8 @@ import os
 
 
 class RF:
-    def __init__(self, imp_datasets_dir=r"export/", y_train_path="export/df_train_y.pkl", target="isFraud",
-                 seed=2022, cv_n_splits=10, n_jobs=-1):
+    def __init__(self, imp_datasets_dir="../data/processed/", y_train_path="../data/processed/ieee_train_y.pkl",
+                 target="isFraud", seed=2022, cv_n_splits=10, n_jobs=-1):
         self.imp_path = imp_datasets_dir
         self.y_train_path = y_train_path
         self.y_train = None
@@ -30,12 +30,12 @@ class RF:
         self.n_jobs = n_jobs
         self.cv_res = []
 
-    def load_data(self, x_final_pattern=r"X_final_", with_pickle=True):
+    def load_data(self, dataset_final_pattern=r"ieee_train_final_", with_pickle=True):
         # Search for imputed datasets
         path_list = os.listdir(self.imp_path)
 
         if with_pickle:
-            X_path_list = list(filter(re.compile(x_final_pattern+r"\d"+r"\.pkl").match, path_list))
+            X_path_list = list(filter(re.compile(dataset_final_pattern+r"\d"+r"\.pkl").match, path_list))
 
             # Append those datasets to list
             for p in X_path_list:
@@ -48,7 +48,7 @@ class RF:
 
         # Otherwise, load from .csv
         else:
-            X_path_list = list(filter(re.compile(x_final_pattern+r"\d"+r"\.csv").match, path_list))
+            X_path_list = list(filter(re.compile(dataset_final_pattern+r"\d"+r"\.csv").match, path_list))
             for p in X_path_list:
                 self.X_train_list.append(pd.read_csv(self.imp_path+p))
 
@@ -110,6 +110,14 @@ class RF:
                 Recall: {np.round(res_dict["mean_test_recall"][0], 4)}
                 F1 score: {np.round(res_dict["mean_test_f1_score"][0], 4)}
                 """)
+
+        return 0
+
+    def save_tuned_models(self):
+        if not os.path.exists("../models/"):
+            os.mkdir("../models/")
+        with open("../data/processed/ieee_baseline_rf.pkl", "wb") as handle:
+            pickle.dump(self.tuned_models, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0
 

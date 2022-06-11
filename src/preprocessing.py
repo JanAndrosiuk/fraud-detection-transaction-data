@@ -11,10 +11,11 @@ import pickle
 
 
 class Preprocessing:
-    def __init__(self, transactions_path="data/train_transaction.csv", identity_path="data/train_identity.csv",
+
+    def __init__(self, transactions_path="../data/raw/train_transaction.csv",
+                 identity_path="../data/raw/train_identity.csv",
                  n_imp_datasets=3, target="isFraud", seed=2022):
-        self.transactions_path = transactions_path
-        self.identity_path = identity_path
+
         self.df_train_transaction_path = transactions_path
         self.df_train_identity_path = identity_path
         self.df_train = None
@@ -27,6 +28,7 @@ class Preprocessing:
         self.target = target
 
     def load_merge_data(self, merge_on="TransactionID", printable=False):
+
         if printable:
             print("Loading and merging Transaction and Identity datasets")
 
@@ -37,6 +39,7 @@ class Preprocessing:
         return 0
 
     def delete_useless_train(self, printable=False):
+
         self.nuniques = self.df_train.nunique().sort_values(ascending=False)
         useless = self.nuniques.where(self.nuniques <= 1).dropna().index.values
         if printable:
@@ -54,6 +57,7 @@ class Preprocessing:
         return 0
 
     def plot_nans_var(self, save_plot=False):
+
         nan_sum = self.df_train.isna().sum()/self.df_train.shape[0]
         nan_sum.sort_values(ascending=False, inplace=True)
         nan_cols = nan_sum.index.values
@@ -71,9 +75,9 @@ class Preprocessing:
         ax.locator_params(nbins=20, axis='y')
         plt.axhline(y=np.mean(nan_sum), color='r', linestyle="--", lw=1)
         if save_plot:
-            if not os.path.exists(r"visualizations"):
-                os.mkdir(r"visualizations")
-            plt.savefig("visualizations/nan_var.png")
+            if not os.path.exists("../reports/figures/"):
+                os.mkdir("../reports/figures/")
+            plt.savefig("../reports/figures/nan_var_ieee.png")
         plt.show()
 
         return 0
@@ -110,9 +114,9 @@ class Preprocessing:
 
         # Save target vector
         if save_target:
-            if not os.path.exists(r"export"):
-                os.mkdir(r"export")
-            with open("export/df_train_y.pkl", 'wb') as handle:
+            if not os.path.exists("../data/processed/"):
+                os.mkdir("../data/processed/")
+            with open("../data/processed/ieee_train_y.pkl", 'wb') as handle:
                 pickle.dump(self.df_train[self.target].values, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0
@@ -137,16 +141,16 @@ class Preprocessing:
 
         # Save dictionary with encodings
         if save_dtypes:
-            if not os.path.exists(r"export"):
-                os.mkdir(r"export")
-            with open("export/train_dtypes.pkl", 'wb') as handle:
+            if not os.path.exists("../data/interim/"):
+                os.mkdir("../data/interim/")
+            with open("../data/interim/ieee_train_dtypes.pkl", 'wb') as handle:
                 pickle.dump(self.df_train.dtypes.to_dict(), handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         # Save label encodings
         if save_encodings:
-            if not os.path.exists(r"export"):
-                os.mkdir(r"export")
-            with open("export/train_label_encodings.pkl", 'wb') as handle:
+            if not os.path.exists("../data/interim/"):
+                os.mkdir("../data/interim/")
+            with open("../data/interim/ieee_train_label_encodings.pkl", "wb") as handle:
                 pickle.dump(self.encoder_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0
@@ -173,9 +177,9 @@ class Preprocessing:
         if save_dataset:
             if printable:
                 print("Saving imputed data")
-            if not os.path.exists(r"export"):
-                os.mkdir(r"export")
-            with open("export/df_train_imputed.pkl", 'wb') as handle:
+            if not os.path.exists("../data/interim/"):
+                os.mkdir("../data/interim/")
+            with open("../data/interim/ieee_train_imputed.pkl", 'wb') as handle:
                 pickle.dump(self.df_train, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0
@@ -199,11 +203,11 @@ class Preprocessing:
         kds.mice(2)
 
         if save_datasets:
-            if not os.path.exists(r"export"):
-                os.mkdir(r"export")
+            if not os.path.exists("../data/interim/"):
+                os.mkdir("../data/interim/")
             for i in range(self.n_imp_datasets):
                 completed_dataset = kds.complete_data(dataset=i, inplace=False)
-                completed_dataset.to_csv(f"export/df_train_imp_{i}.csv", index=False)
+                completed_dataset.to_csv(f"../data/interim/ieee_train_mf_imputed_{i}.csv", index=False)
 
         if return_datasets:
             return kds

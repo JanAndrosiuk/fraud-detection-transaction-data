@@ -1,5 +1,5 @@
-from preprocessing import *
-from entityEmbedding import *
+from src.preprocessing import *
+from src.entityEmbedding import *
 
 
 def main():
