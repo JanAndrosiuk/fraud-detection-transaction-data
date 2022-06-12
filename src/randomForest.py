@@ -116,7 +116,7 @@ class RF:
     def save_tuned_models(self):
         if not os.path.exists("../models/"):
             os.mkdir("../models/")
-        with open("../data/processed/ieee_baseline_rf.pkl", "wb") as handle:
+        with open("../data/processed/ieee_baseline_tuned_rf.pkl", "wb") as handle:
             pickle.dump(self.tuned_models, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0

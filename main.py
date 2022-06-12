@@ -1,5 +1,6 @@
 from src.preprocessing import *
 from src.entityEmbedding import *
+from src.randomForest import *
 
 
 def main():
@@ -16,9 +17,14 @@ def main():
     em.fit_model(verbose=2, printable=True)
     em.transform_cat_features()
 
+    rf = RF(n_jobs=10)
+    rf.load_data()
+    rf.cv_base_model(verbose=2)
+    rf.tune_model(verbose=2, n_param_samples=25)
+    rf.save_tuned_models()
+
     return 0
 
 
 if __name__ == "__main__":
-    # main()
-    pass
+    main()
