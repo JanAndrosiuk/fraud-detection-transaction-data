@@ -1,0 +1,11 @@
+# 1. Cross validation on baseline model with default scikit-learn parameters yielded following average results on stratified k-fold cross validation:
+Accuracy 0.9691
+Precision 0.9526
+Recall 0.6385
+F1 score 0.7644
+
+# 2. Random search over parameter grid with 25 parameter samples yielded following average results on stratified k-fold cross validation:
+Accuracy: 0.9653
+Precision: 0.9429
+Recall: 0.5937
+F1 score: 0.7285

@@ -1,6 +1,7 @@
 from src.preprocessing import *
 from src.entityEmbedding import *
 from src.randomForest import *
+from src.graphVesta import *
 
 
 def main():
@@ -21,7 +22,13 @@ def main():
     rf.load_data()
     rf.cv_base_model(verbose=2)
     rf.tune_model(verbose=2, n_param_samples=25)
-    rf.save_tuned_models()
+
+    gv = GraphVesta()
+    gv.load_raw_data()
+    gv.generate_signatures()
+    gv.prepare_neo4j_import(printable=True)
+    gv.create_bat_file()
+    gv.create_graph()
 
     return 0
 

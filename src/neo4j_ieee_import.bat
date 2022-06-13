@@ -1,0 +1,2 @@
+cd C:/Users/user/.Neo4jDesktop/relate-data/dbmss/dbms-c3534c51-313d-4ff0-9094-0475b8061d1b/
+bin/neo4j-admin.bat import --nodes import/nodes_account_header.csv,import/nodes_account.csv --nodes import/nodes_device_header.csv,import/nodes_device.csv --relationships import/rels_header.csv,import/rels.csv --force

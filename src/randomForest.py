@@ -56,8 +56,8 @@ class RF:
 
         return 0
 
-    def cv_base_model(self, verbose=1):
-        for X in self.X_train_list:
+    def cv_base_model(self, verbose=1, save_model=True):
+        for i, X in enumerate(self.X_train_list):
             model = RandomForestClassifier()
 
             cv_scores = cross_validate(
@@ -68,9 +68,17 @@ class RF:
             self.cv_scores.append(cv_scores)
             self.cv_base_models.append(model)
 
+            if save_model:
+                if save_model:
+                    if not os.path.exists("../models/"):
+                        os.mkdir("../models/")
+                with open(f"../models/ieee_baseline_rf_{i}.pkl", "wb") as handle:
+                    pickle.dump(self.cv_base_models[i], handle, protocol=pickle.HIGHEST_PROTOCOL)
+
         return 0
 
-    def tune_model(self, verbose=1, print_val_scoring=True, n_param_samples=20):
+    def tune_model(self, verbose=1, print_val_scoring=True, n_param_samples=20, save_model=True):
+
         for i in range(len(self.cv_base_models)):
 
             n_estimators = [50, 100, 200, 250, 300, 400, 500, 800]
@@ -111,13 +119,11 @@ class RF:
                 F1 score: {np.round(res_dict["mean_test_f1_score"][0], 4)}
                 """)
 
-        return 0
-
-    def save_tuned_models(self):
-        if not os.path.exists("../models/"):
-            os.mkdir("../models/")
-        with open("../data/processed/ieee_baseline_tuned_rf.pkl", "wb") as handle:
-            pickle.dump(self.tuned_models, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            if save_model:
+                if not os.path.exists("../models/"):
+                    os.mkdir("../models/")
+                with open(f"../models/ieee_baseline_rf_tuned_{i}.pkl", "wb") as handle:
+                    pickle.dump(self.tuned_models[i], handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0
 

@@ -6,3 +6,5 @@ Master Thesis
 
 [[miceforest imputation method]](https://morioh.com/p/e19cd87c66e3)
 
+## Further research
+- [ ] Optimize hyperparameter tuning using cuML API to train models
