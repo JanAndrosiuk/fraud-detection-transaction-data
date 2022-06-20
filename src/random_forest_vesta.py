@@ -1,12 +1,15 @@
+from src.setup_logger import *
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split, StratifiedKFold, RepeatedStratifiedKFold, cross_val_score, RandomizedSearchCV, cross_validate
-from sklearn.metrics import make_scorer, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, roc_curve, auc, precision_recall_curve
+from sklearn.model_selection import RepeatedStratifiedKFold, RandomizedSearchCV, cross_validate
+from sklearn.metrics import make_scorer, accuracy_score, precision_score, recall_score, f1_score, \
+    roc_curve, auc, precision_recall_curve
 import pickle
 import matplotlib.pyplot as plt
 import re
 import os
+logger = logging.getLogger("RandomForest")
 
 
 class RF:
@@ -30,17 +33,19 @@ class RF:
         self.n_jobs = n_jobs
         self.cv_res = []
 
-    def load_data(self, dataset_final_pattern=r"ieee_train_final_", with_pickle=True):
+    def load_data(self, dataset_final_pattern=r"ieee_train_final_", with_pickle=True, exclude_cols=None):
+        if exclude_cols is None:
+            exclude_cols = []
         # Search for imputed datasets
         path_list = os.listdir(self.imp_path)
 
         if with_pickle:
-            X_path_list = list(filter(re.compile(dataset_final_pattern+r"\d"+r"\.pkl").match, path_list))
+            x_path_list = list(filter(re.compile(dataset_final_pattern+r"\d"+r"\.pkl").match, path_list))
 
             # Append those datasets to list
-            for p in X_path_list:
+            for p in x_path_list:
                 with open(self.imp_path+p, "rb") as h:
-                    self.X_train_list.append(pickle.load(h))
+                    self.X_train_list.append(pickle.load(h).drop(exclude_cols, axis=1))
 
             # Load target vector
             with open(self.y_train_path, "rb") as h:
@@ -48,15 +53,15 @@ class RF:
 
         # Otherwise, load from .csv
         else:
-            X_path_list = list(filter(re.compile(dataset_final_pattern+r"\d"+r"\.csv").match, path_list))
-            for p in X_path_list:
+            x_path_list = list(filter(re.compile(dataset_final_pattern+r"\d"+r"\.csv").match, path_list))
+            for p in x_path_list:
                 self.X_train_list.append(pd.read_csv(self.imp_path+p))
 
             self.y_train = pd.read_csv(self.y_train_path)
 
         return 0
 
-    def cv_base_model(self, verbose=1, save_model=True):
+    def cv_base_model(self, verbose=1, save_model=True, name_prefix="ieee_baseline_rf_", print_val_scoring=False):
         for i, X in enumerate(self.X_train_list):
             model = RandomForestClassifier()
 
@@ -64,20 +69,28 @@ class RF:
                 model, X, self.y_train, scoring=self.scoring, cv=self.cv,
                 n_jobs=self.n_jobs, error_score='raise', verbose=verbose
             )
+            if print_val_scoring:
+                print(f"""
+                    Mean validation results:
+                    Accuracy: {np.round(np.mean(cv_scores["test_accuracy"]), 4)}
+                    Precision: {np.round(np.mean(cv_scores["test_precision"]), 4)}
+                    Recall: {np.round(np.mean(cv_scores["test_recall"]), 4)}
+                    F1 score: {np.round(np.mean(cv_scores["test_f1_score"]), 4)}
+                """)
 
             self.cv_scores.append(cv_scores)
             self.cv_base_models.append(model)
 
             if save_model:
-                if save_model:
-                    if not os.path.exists("../models/"):
-                        os.mkdir("../models/")
-                with open(f"../models/ieee_baseline_rf_{i}.pkl", "wb") as handle:
+                if not os.path.exists("../models/"):
+                    os.mkdir("../models/")
+                with open(f"../models/{name_prefix}{i}.pkl", "wb") as handle:
                     pickle.dump(self.cv_base_models[i], handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0
 
-    def tune_model(self, verbose=1, print_val_scoring=True, n_param_samples=20, save_model=True):
+    def tune_model(self, verbose=1, print_val_scoring=True, n_param_samples=20, save_model=True,
+                   name_prefix="ieee_baseline_rf_tuned_"):
 
         for i in range(len(self.cv_base_models)):
 
@@ -122,7 +135,7 @@ class RF:
             if save_model:
                 if not os.path.exists("../models/"):
                     os.mkdir("../models/")
-                with open(f"../models/ieee_baseline_rf_tuned_{i}.pkl", "wb") as handle:
+                with open(f"../models/{name_prefix}{i}.pkl", "wb") as handle:
                     pickle.dump(self.tuned_models[i], handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0
@@ -138,9 +151,9 @@ class RF:
         fpr, tpr, threshold = roc_curve(real_labels, pred_probas)
         roc_auc = auc(fpr, tpr)
         plt.title('Receiver Operating Characteristic')
-        plt.plot(fpr, tpr, 'b', label = 'AUC = %0.2f' % roc_auc)
-        plt.legend(loc = 'lower right')
-        plt.plot([0, 1], [0, 1],'r--')
+        plt.plot(fpr, tpr, 'b', label="AUC = %0.2f" % roc_auc)
+        plt.legend(loc="lower right")
+        plt.plot([0, 1], [0, 1], "r--")
         plt.xlim([0, 1])
         plt.ylim([0, 1])
         plt.ylabel('True Positive Rate')

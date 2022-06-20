@@ -1,3 +1,4 @@
+from src.setup_logger import *
 import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -12,31 +13,17 @@ from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from sklearn.metrics import roc_auc_score
 import re
 import pickle
+logger = logging.getLogger("EntityEmbedding")
 
 
 class EntityEmbeddings:
 
     def __init__(self, imp_datasets=None, imp_datasets_path="../data/interim/", df_pattern="ieee_train_imputed",
-                 data_types_path="ieee_train_dtypes.pkl", load_pickle=False):
+                 cat_vars_filename="ieee_train_y", data_types_path="ieee_train_dtypes.pkl", load_pickle=False):
 
         self.target = ["isFraud"]
-        # self.cat_cols = [
-        #     "DeviceInfo", "id_33", "id_31", "id_30", "R_emaildomain", "P_emaildomain",
-        #     "ProductCD", "id_34", "card4", "M4", "id_23", "card6", "id_15", "id_37",
-        #     "id_36", "id_38", "id_35", "DeviceType", "V65", "id_29", "id_28", "id_27",
-        #     "V41", "V94", "id_16", "V88", "id_12", "V14"
-        # ]
-        self.cat_cols = [
-            "ProductCD", "card1", "card2", "card3", "card4", "card5", "card6",
-            "addr1", "addr2", "P_emaildomain", "R_emaildomain",
-            "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9",
-            "DeviceType", "DeviceInfo",
-            "id_1", "id_2", "id_3", "id_4", "id_5", "id_6", "id_7", "id_8", "id_9",
-            "id_10", "id_11", "id_12", "id_13", "id_14", "id_15", "id_16", "id_17", "id_18",
-            "id_19", "id_20", "id_21", "id_22", "id_23", "id_24", "id_25", "id_26", "id_27",
-            "id_28", "id_29", "id_30", "id_31", "id_32", "id_33", "id_34", "id_35", "id_36",
-            "id_37", "id_38"
-        ]
+        with open(f"../data/interim/{cat_vars_filename}.pkl", "rb") as handle:
+            self.cat_cols = pickle.load(handle)
 
         self.dataset_list = []
 
@@ -51,6 +38,7 @@ class EntityEmbeddings:
 
         # if imputed datasets should be loaded from drive using pandas read_csv() method
         elif not load_pickle and imp_datasets is None:
+
             # Search for imputed datasets
             path_list = os.listdir(imp_datasets_path)
             path_list = list(filter(re.compile(df_pattern).match, path_list))
@@ -88,7 +76,7 @@ class EntityEmbeddings:
         return 0
 
     @staticmethod
-    def get_emb_model(df, categorical_features, printable=False):
+    def get_emb_model(df, categorical_features):
 
         inputs = []
         outputs = []
@@ -96,14 +84,12 @@ class EntityEmbeddings:
         for col in categorical_features:
 
             # find the cardinality of each categorical column, and set appropriate embedding dimension
-            if printable:
-                print(df[col].nunique(), df[col].max())
+            logger.debug(df[col].nunique(), df[col].max())
             cardinality = int(df[col].nunique()) + 1
             # cardinality = int(df[col].max())+1
 
             embedding_dim = max(min(cardinality//2, 100), 2)
-            if printable:
-                print(f'{col}: cardinality : {cardinality} and embedding dim: {embedding_dim}')
+            logger.debug(f'{col}: cardinality : {cardinality} and embedding dim: {embedding_dim}')
 
             inp = Input(shape=(1,))
 
@@ -140,8 +126,7 @@ class EntityEmbeddings:
 
         # Specify and compile the model:
         embed_model = Model(inputs=inputs, outputs=y_out)
-        if printable:
-            print(embed_model.summary())
+        logger.info(embed_model.summary())
 
         return embed_model
 
@@ -162,14 +147,17 @@ class EntityEmbeddings:
 
     @staticmethod
     def auc(y_true, y_pred):
-        def fallback_auc(y_true, y_pred):
+
+        def fallback_auc(y_true_, y_pred_):
             try:
-                return roc_auc_score(y_true, y_pred)
-            except:
+                return roc_auc_score(y_true_, y_pred_)
+            except Exception as e:
+                logger.exception(e)
                 return 0.5
+
         return tensorflow.py_function(fallback_auc, (y_true, y_pred), tensorflow.double)
 
-    def fit_model(self, save_dicts=True, verbose=1, printable=False):
+    def fit_model(self, save_dicts=True, verbose=1):
         """
         https://stackoverflow.com/questions/62188532/invalidargumenterror-indices24-0-335-is-not-in-0-304-node-user-embed
         """
@@ -179,11 +167,8 @@ class EntityEmbeddings:
             # model = self.get_emb_model(np.vstack((self.X_train_list[i], self.X_val_list[i])), self.cat_cols)
             model = self.get_emb_model(
                 pd.concat([self.X_train_list[i], self.X_val_list[i]], axis=0),
-                self.cat_cols,
-                printable=printable
+                self.cat_cols
             )
-            # if printable:
-            #     print(model.summary())
 
             model.compile(
                 loss="binary_crossentropy",
@@ -192,11 +177,10 @@ class EntityEmbeddings:
             )
 
             # get the lists of data to feed into the Keras model:
-            if printable:
-                print("X train and validation shapes:", self.X_train_list[i].shape, self.X_val_list[i].shape)
+            logger.debug("X train and validation shapes:", self.X_train_list[i].shape, self.X_val_list[i].shape)
 
             # Appending to train and validation lists
-            X_embed_train, X_embed_val = self.embedding_preproc(self.X_train_list[i], self.X_val_list[i])
+            x_embed_train, x_embed_val = self.embedding_preproc(self.X_train_list[i], self.X_val_list[i])
 
             es = EarlyStopping(
                 monitor='val_auc', min_delta=0.001, patience=5, verbose=verbose, mode='max',
@@ -208,10 +192,10 @@ class EntityEmbeddings:
             )
 
             model.fit(
-                X_embed_train,
+                x_embed_train,
                 self.y_train_list[i].values,
                 # utils.to_categorical(self.y_train_list[i].values),
-                validation_data=(X_embed_val, self.y_val_list[i].values),
+                validation_data=(x_embed_val, self.y_val_list[i].values),
                 callbacks=[es, rlr],
                 batch_size=128, epochs=100, verbose=verbose
             )
@@ -223,8 +207,7 @@ class EntityEmbeddings:
 
                 embedding_dict[c] = model.get_layer(c + "_embed").get_weights()[0]
 
-                if printable:
-                    print(f"{c} dim: {len(embedding_dict[c][0])}")
+                logger.debug(f"{c} dim: {len(embedding_dict[c][0])}")
 
             if save_dicts:
                 if not os.path.exists("../models/"):
@@ -235,6 +218,8 @@ class EntityEmbeddings:
         return 0
 
     def transform_cat_features(self, save_dataframe=True):
+
+        logger.info("Transforming categorical features")
         for i in range(len(self.dataset_list)):
 
             with open(f"../models/ieee_embedding_dict_{i}.pkl", "rb") as handle:
@@ -242,16 +227,15 @@ class EntityEmbeddings:
 
             cat_emb_list = []
             for c in self.cat_cols:
-                X = pd.concat([self.X_train_list[i], self.X_val_list[i]])
+                x_set = pd.concat([self.X_train_list[i], self.X_val_list[i]])
                 cat_emb_list.append(
-                    X[[c]]
-                        .merge(pd.DataFrame(embedding_dict[c]), left_on=c, right_index=True)
-                        .drop(c, axis=1)
-                        .reset_index(drop=True)
-                        .add_prefix(f"{c}_")
+                    x_set[[c]].merge(pd.DataFrame(embedding_dict[c]), left_on=c, right_index=True)
+                              .drop(c, axis=1)
+                              .reset_index(drop=True)
+                              .add_prefix(f"{c}_")
                 )
-                X_final = pd.concat(
-                    [X.drop(self.cat_cols, axis=1), pd.concat(cat_emb_list, axis=1)],
+                x_final = pd.concat(
+                    [x_set.drop(self.cat_cols, axis=1), pd.concat(cat_emb_list, axis=1)],
                     axis=1
                 )
 
@@ -259,6 +243,6 @@ class EntityEmbeddings:
                     if not os.path.exists("../data/processed"):
                         os.mkdir("../data/processed")
                     with open(f"../data/processed/ieee_train_final_{i}.pkl", "wb") as h:
-                        pickle.dump(X_final, h, protocol=pickle.HIGHEST_PROTOCOL)
+                        pickle.dump(x_final, h, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0
