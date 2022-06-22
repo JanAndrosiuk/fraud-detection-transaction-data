@@ -63,7 +63,7 @@ class RF:
 
     def cv_base_model(self, verbose=1, save_model=True, name_prefix="ieee_baseline_rf_", print_val_scoring=False):
         for i, X in enumerate(self.X_train_list):
-            model = RandomForestClassifier()
+            model = RandomForestClassifier(n_jobs=self.n_jobs)
 
             cv_scores = cross_validate(
                 model, X, self.y_train, scoring=self.scoring, cv=self.cv,

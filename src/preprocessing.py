@@ -184,14 +184,14 @@ class Preprocessing:
         return 0
 
     def iteratively_impute(self, max_iter=10, verbose=0, save_dataset=True, save_name="ieee_train_imputed",
-                           nearest_features=100):
+                           nearest_features=100, n_jobs=1):
         imp_num = IterativeImputer(
-            estimator=RandomForestRegressor(),
+            estimator=RandomForestRegressor(n_jobs=n_jobs),
             initial_strategy="mean", max_iter=max_iter, n_nearest_features=nearest_features,
             verbose=verbose, random_state=self.seed
         )
         imp_cat = IterativeImputer(
-            estimator=RandomForestClassifier(),
+            estimator=RandomForestClassifier(n_jobs=n_jobs),
             initial_strategy="most_frequent", max_iter=max_iter, n_nearest_features=nearest_features,
             verbose=verbose, random_state=self.seed
         )

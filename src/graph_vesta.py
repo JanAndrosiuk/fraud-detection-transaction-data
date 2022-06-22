@@ -16,15 +16,14 @@ class GraphVesta:
                  raw_imputed_path="../data/interim/ieee_train_imputed_old.pkl",
                  db_uri="bolt://localhost:7687", user="neo4j", password="password",
                  graph_name="vesta", nodes_labels="['account', 'device']", rel_label="transaction",
-                 save_prefix="vesta_"):
+                 mono_label="account", save_prefix="vesta_"):
         self.x_train_path, self.y_train_path = x_train_path, y_train_path
-        self.raw_imputed_path = raw_imputed_path
-        self.neo4j_root_dir = neo4j_root_dir
-        self.x_train, self.y_train = None, None
-        self.train_nodes, self.train_edges = None, None
+        self.raw_imputed_path, self.neo4j_root_dir = raw_imputed_path, neo4j_root_dir
+        self.x_train, self.y_train, self.train_nodes, self.train_edges = None, None, None, None
         self.signature_cols, self.metrics_cols = ["start_node_id", "end_node_id"], None
         self.gds, self.db_uri, self.user, self.password = None, db_uri, user, password
         self.graph_name, self.nodes_labels, self.rel_label = graph_name, nodes_labels, rel_label
+        self.mono_graph_name, self.mono_label, self.monopartite = f"mono_{self.graph_name}", mono_label, None
         self.save_prefix = save_prefix
 
     def load_raw_data(self):
@@ -48,6 +47,8 @@ class GraphVesta:
 
         start_node_signature = train_imp.groupby(start_node_sign_cols).ngroup().values
         end_node_signature = train_imp.groupby(end_node_sign_cols).ngroup().values
+        # logger.info(f"Unique account ids: {start_node_signature.shape},
+        # unique device ids: {end_node_signature.shape}")
 
         df_res = pd.DataFrame()
         df_res[self.signature_cols[0]] = start_node_signature
@@ -155,83 +156,254 @@ class GraphVesta:
     def run(self, query=""):
         return self.gds.run_cypher(query)
 
-    def append_metrics(self, save_dataset=True):
+    def append_metrics(self, save_dataset=True, delete_sign=False, mono=False):
 
         init_cols = self.x_train.columns
+        if mono:
+            graph_name = self.mono_graph_name
+        else:
+            graph_name = self.graph_name
 
         # Calculate centrality metrics
-        degree = self.run(
-            f"""
+        if mono:
+            logger.info("Calculating degree")
+            degree = self.run(
+                f"""
+                call gds.degree.stream("{graph_name}")
+                yield nodeId, score as degree
+                return coalesce(gds.util.asNode(nodeId).Id, "") as id, degree
+                """
+            )
+        else:
+            logger.info("Calculating degree")
+            degree = self.run(
+                f"""
             call gds.degree.stream("{self.graph_name}")
             yield nodeId, score as degree
             return coalesce(gds.util.asNode(nodeId).{self.signature_cols[0]}, "") + 
                 coalesce(gds.util.asNode(nodeId).{self.signature_cols[1]}, "") as id, degree
             """
-        )
+            )
+        logger.info("Calculating pagerank")
         pagerank = self.run(
             f"""
-            CALL gds.pageRank.stream("{self.graph_name}")
+            CALL gds.pageRank.stream("{graph_name}")
             yield nodeId, score as pagerank return pagerank
             """
         )
+        logger.info("Calculating hits scores")
         hits = self.run(
             f"""
-            CALL gds.alpha.hits.stream("{self.graph_name}", {{hitsIterations: 20}})
+            CALL gds.alpha.hits.stream("{graph_name}", {{hitsIterations: 20}})
             yield nodeId, values
             return values.auth as hits_auth, values.hub as hits_hub
             """
         )
+        logger.info("Calculating betweenness")
         betweenness = self.run(
             f"""
-            CALL gds.betweenness.stream("{self.graph_name}")
+            CALL gds.betweenness.stream("{graph_name}")
             yield nodeId, score as betweenness return betweenness
             """
         )
+        logger.info("Calculating wcc size")
         wcc_size = self.run(
             f"""
-            CALL gds.wcc.stream("{self.graph_name}")
+            CALL gds.wcc.stream("{graph_name}")
             yield nodeId, componentId
             """
         )
+        logger.info("Calculating louvain community sizes")
         louvain_size = self.run(
-            f"call gds.louvain.stream('{self.graph_name}') yield nodeId, communityId"
+            f"call gds.louvain.stream('{graph_name}') yield nodeId, communityId"
         )
 
         # Calculate size of the WCC
+        logger.debug("Extracting wcc info")
         map_dict = wcc_size.groupby("componentId").size().to_frame()
         map_dict.columns = ["wcc_size"]
         wcc_size = wcc_size.merge(map_dict, left_on="componentId", right_index=True) \
             .drop(["nodeId", "componentId"], axis=1)
 
         # Calculate size of the community each node belongs to
+        logger.debug("Extracting louvain communities' info")
         map_dict = louvain_size.groupby("communityId").size().to_frame()
         map_dict.columns = ["community_size"]
         louvain_size = louvain_size.merge(map_dict, left_on="communityId", right_index=True) \
             .drop(["nodeId", "communityId"], axis=1)
 
         # Collect all metrics in one dataframe describing each node
+        logger.debug("Concatenating metrics")
         metrics_df = pd.concat(
             [degree, pagerank, hits, betweenness, wcc_size, louvain_size], axis=1
         )
-        metrics_acc = metrics_df.loc[metrics_df["id"].str[0] == "a"].add_prefix("acc_")
-        metrics_dev = metrics_df.loc[metrics_df["id"].str[0] == "v"].add_prefix("dev_")
+        if mono:
+            logger.info("Merging and saving training data set with monopartite graph features")
+            self.x_train = self.x_train.merge(
+                metrics_df, how="left", left_on="start_node_id", right_on="id"
+            )
+            if delete_sign:
+                self.x_train.drop(["start_node_id", "end_node_id", "id"], axis=1, inplace=True)
+            self.metrics_cols = [x for x in list(self.x_train.columns) if x not in init_cols]
+            logger.debug(f"Metric columns: {self.metrics_cols}")
 
-        # Merge calculated metrics with train dataset
-        self.x_train = self.x_train.merge(
-            metrics_acc, how="left", left_on="start_node_id", right_on="acc_id"
-        )
-        self.x_train = self.x_train.merge(
-            metrics_dev, how="left", left_on="end_node_id", right_on="dev_id"
-        )
-        self.x_train.drop(["start_node_id", "end_node_id", "acc_id", "dev_id"], axis=1, inplace=True)
+        else:
+            logger.info("Merging and saving training data set with bipartite graph features")
+            metrics_acc = metrics_df.loc[metrics_df["id"].str[0] == "a"].add_prefix("acc_")
+            metrics_dev = metrics_df.loc[metrics_df["id"].str[0] == "v"].add_prefix("dev_")
 
-        self.metrics_cols = [x for x in list(self.x_train.columns) if x not in init_cols]
-        logger.debug(f"Metric columns: {self.metrics_cols}")
+            # Merge calculated metrics with train dataset
+            self.x_train = self.x_train.merge(
+                metrics_acc, how="left", left_on="start_node_id", right_on="acc_id"
+            )
+            self.x_train = self.x_train.merge(
+                metrics_dev, how="left", left_on="end_node_id", right_on="dev_id"
+            )
+            if delete_sign:
+                self.x_train.drop(["start_node_id", "end_node_id", "acc_id", "dev_id"], axis=1, inplace=True)
+            else:
+                self.x_train.drop(["acc_id", "dev_id"], axis=1, inplace=True)
+
+            self.metrics_cols = [x for x in list(self.x_train.columns) if x not in init_cols]
+            logger.debug(f"Metric columns: {self.metrics_cols}")
 
         if save_dataset:
+            logger.info("Saving data")
             if not os.path.exists("../data/processed"):
                 os.mkdir("../data/processed")
-            with open(f"../data/processed/{self.save_prefix}graph_train_0.pkl", "wb") as handle:
-                pickle.dump(self.x_train, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            if mono:
+                with open(f"../data/processed/mono_{self.save_prefix}graph_train_0.pkl", "wb") as handle:
+                    pickle.dump(self.x_train, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            else:
+                with open(f"../data/processed/{self.save_prefix}graph_train_0.pkl", "wb") as handle:
+                    pickle.dump(self.x_train, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+        return metrics_df
+
+    def one_mode_projection(self):
+        """
+        Equivalent in Neo4j would be something like (but it takes too long):
+            MATCH (a1:account)-[*2]-(a2:account)
+            WHERE id(a1) < id(a2)
+            WITH a1, a2, count(*) as strength
+            CREATE (a1)-[r:RELATED_TO]->(a2)
+            SET r.strength = strength
+        :return:
+        """
+
+        # Take only start node id (account id) and end node id (device id)
+        adj_df = self.x_train[["start_node_id", "end_node_id"]].copy()
+
+        # buffer column which will be used for aggregation purposes to indicate presence of connection
+        adj_df["exist"] = 1
+
+        # Turn the dataframe to pivot form which indicates adjacency between account and device nodes
+        adj_df = pd.pivot_table(
+            adj_df, values="exist", index=["start_node_id"], columns=["end_node_id"], aggfunc=np.sum
+        )
+
+        # NAs have to be temporarily converted to 0 in order to allow multiplication
+        adj_df.fillna(0, inplace=True)
+
+        # Convert to numpy matrix form for the ease of calculations
+        adj_matrix = adj_df.values
+
+        # Compute the dot product of adjacency matrix and its transposition which is the core calculation of
+        # the projection from bipartite to monopartite graph
+        adj_matrix = adj_matrix.dot(adj_matrix.T)
+
+        # recurrent links are not allowed, therefore diagonal should be filled with zeros
+        np.fill_diagonal(adj_matrix, 0)
+
+        # only one way connections relevant, therefore
+        # only the upper (or lower, doesn't matter) diagonal is analyzed
+        adj_matrix *= 1 - np.tri(*adj_matrix.shape, k=-1)
+
+        # converting NAs back to zero to allow the later conversion method (to pandas DataFrame) to skip them
+        adj_matrix[adj_matrix == 0] = np.nan
+
+        # stack method transforms the DataFrame to long form with multi-index
+        monopartite = pd.DataFrame(
+            adj_matrix, index=adj_df.index, columns=adj_df.index
+        ).stack()
+        monopartite.index.names = ["start", "end"]
+
+        # resetting the index yields the clean form of graph representation which is ready to import to Neo4j
+        monopartite = monopartite.reset_index()
+        monopartite.rename(columns={0: "strength"}, inplace=True)
+        monopartite["strength"] = monopartite["strength"].astype(int)
+
+        self.monopartite = monopartite
+
+        return 0
+
+    def prepare_mono_neo4j_import(self, create_bat=True):
+        """
+        Divide variables into node variables and relationship variables
+        :return: 0 if the process was completed successfully
+        """
+
+        # 1. Account nodes
+        logger.info("Preparing and saving Account nodes")
+        df_to_save = pd.DataFrame(
+            {"Id:ID": self.x_train["start_node_id"].unique(), "label:LABEL": "account"}
+        )
+        feature_header = list(df_to_save.columns)
+        # noinspection PyTypeChecker
+        np.savetxt(
+            f"{self.neo4j_root_dir}import/mono_{self.save_prefix}nodes_header.csv",
+            (feature_header,), delimiter=",", fmt="% s"
+        )
+        df_to_save.to_csv(
+            f"{self.neo4j_root_dir}import/mono_{self.save_prefix}nodes.csv", header=False, index=False
+        )
+
+        # 2. Relationship edges
+        logger.info("Preparing and saving Relationship nodes")
+        df_to_save = self.monopartite.copy()
+        df_to_save.columns = ["start:START_ID", "end:END_ID", "strength:int"]
+        df_to_save["type:TYPE"] = self.rel_label
+        feature_header = list(df_to_save.columns)
+        # noinspection PyTypeChecker
+        np.savetxt(
+            f"{self.neo4j_root_dir}import/mono_{self.save_prefix}rels_header.csv",
+            (feature_header,), delimiter=",", fmt="% s"
+        )
+        df_to_save.to_csv(
+            f"{self.neo4j_root_dir}import/mono_{self.save_prefix}rels.csv", header=False, index=False
+        )
+
+        if create_bat:
+            with open(f"../src/neo4j_mono_{self.save_prefix}import.bat", "w+") as h:
+                h.write(
+                    f"cd {self.neo4j_root_dir}\n" + "bin/neo4j-admin.bat import " +
+                    f"--nodes import/mono_{self.save_prefix}nodes_header.csv," +
+                    f"import/mono_{self.save_prefix}nodes.csv " +
+                    f"--relationships import/mono_{self.save_prefix}rels_header.csv," +
+                    f"import/mono_{self.save_prefix}rels.csv " +
+                    "--force"
+                )
+
+        return 0
+
+    def create_mono_graph(self):
+
+        self.gds = GraphDataScience(self.db_uri, auth=(self.user, self.password))
+        try:
+            if self.run(f"call gds.graph.exists('{self.mono_graph_name}') yield exists").values[0]:
+                logger.info("Graph already exists")
+                return 0
+            self.gds.run_cypher(
+                f"""
+                CALL gds.graph.project(
+                '{self.mono_graph_name}',
+                '{self.mono_label}',""" +
+                "\n\t{%s: {orientation: 'UNDIRECTED'}})" % self.rel_label
+            )
+            logger.info("Graph successfully created")
+        except Exception:
+            raise Exception("wrong graph parameters / db server not started")
+
+        logger.debug(self.run(f"call gds.graph.exists('{self.mono_graph_name}') yield exists"))
 
         return 0
