@@ -1,5 +1,5 @@
-from src.preprocessing import *
-from src.entity_embedding import *
+from src.preprocessing_vesta import *
+from src.entity_embedding_vesta import *
 from src.random_forest_vesta import *
 from src.graph_vesta import *
 
@@ -28,7 +28,11 @@ def main():
     gv.generate_signatures()
     gv.prepare_neo4j_import()
     gv.create_bat_file()
-    gv.create_graph()
+    gv.append_metrics(mono=False, save_dataset=True, delete_sign=False)
+    gv.one_mode_projection()
+    gv.prepare_mono_neo4j_import(create_bat=True)
+    gv.create_mono_graph()
+    gv.append_metrics(mono=True, save_dataset=True, delete_sign=False)
 
     return 0
 

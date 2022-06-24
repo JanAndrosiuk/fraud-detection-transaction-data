@@ -1,0 +1,21 @@
+[IterativeImputer] Completing matrix with shape (144233, 334)
+[IterativeImputer] Ending imputation round 1/10, elapsed time 8529.78
+[IterativeImputer] Change: 325850.7411750241, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 2/10, elapsed time 17073.73
+[IterativeImputer] Change: 368274.91360990616, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 3/10, elapsed time 25753.04
+[IterativeImputer] Change: 131654.9091557357, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 4/10, elapsed time 35158.60
+[IterativeImputer] Change: 148362.23704902944, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 5/10, elapsed time 45100.18
+[IterativeImputer] Change: 102320.85999153003, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 6/10, elapsed time 55124.95
+[IterativeImputer] Change: 134008.06100615277, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 7/10, elapsed time 65413.30
+[IterativeImputer] Change: 75113.76438140869, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 8/10, elapsed time 75390.10
+[IterativeImputer] Change: 65604.28050212935, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 9/10, elapsed time 86425.13
+[IterativeImputer] Change: 82494.57984064803, scaled tolerance: 641.5114375 
+[IterativeImputer] Ending imputation round 10/10, elapsed time 96814.15
+[IterativeImputer] Change: 77287.35157861054, scaled tolerance: 641.5114375

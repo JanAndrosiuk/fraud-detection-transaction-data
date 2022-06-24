@@ -161,8 +161,10 @@ class GraphVesta:
         init_cols = self.x_train.columns
         if mono:
             graph_name = self.mono_graph_name
+            self.create_mono_graph()
         else:
             graph_name = self.graph_name
+            self.create_graph()
 
         # Calculate centrality metrics
         if mono:

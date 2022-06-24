@@ -1,0 +1,46 @@
+Epoch 1/100
+755/755 - 27s - loss: 1.5297 - auc: 0.5305 - val_loss: 0.6033 - val_auc: 0.5185
+Epoch 2/100
+755/755 - 21s - loss: 0.6619 - auc: 0.6015 - val_loss: 0.5428 - val_auc: 0.5721
+Epoch 3/100
+755/755 - 21s - loss: 0.4771 - auc: 0.6536 - val_loss: 0.4983 - val_auc: 0.6381
+Epoch 4/100
+755/755 - 21s - loss: 0.3908 - auc: 0.7136 - val_loss: 0.4891 - val_auc: 0.6743
+Epoch 5/100
+755/755 - 20s - loss: 0.3691 - auc: 0.7508 - val_loss: 0.5129 - val_auc: 0.6874
+Epoch 6/100
+755/755 - 22s - loss: 0.3498 - auc: 0.7703 - val_loss: 0.4930 - val_auc: 0.6969
+Epoch 7/100
+755/755 - 21s - loss: 0.3271 - auc: 0.7971 - val_loss: 0.5043 - val_auc: 0.7001
+Epoch 8/100
+755/755 - 20s - loss: 0.3123 - auc: 0.8186 - val_loss: 0.4890 - val_auc: 0.7225
+Epoch 9/100
+755/755 - 21s - loss: 0.3172 - auc: 0.8136 - val_loss: 0.5037 - val_auc: 0.7086
+Epoch 10/100
+755/755 - 21s - loss: 0.3237 - auc: 0.8210 - val_loss: 0.4861 - val_auc: 0.7196
+Epoch 11/100
+755/755 - 21s - loss: 0.2955 - auc: 0.8357 - val_loss: 0.4763 - val_auc: 0.7265
+Epoch 12/100
+755/755 - 21s - loss: 0.2821 - auc: 0.8431 - val_loss: 0.4679 - val_auc: 0.7351
+Epoch 13/100
+755/755 - 21s - loss: 0.2712 - auc: 0.8486 - val_loss: 0.4832 - val_auc: 0.7318
+Epoch 14/100
+755/755 - 21s - loss: 0.2666 - auc: 0.8584 - val_loss: 0.4762 - val_auc: 0.7381
+Epoch 15/100
+755/755 - 21s - loss: 0.2596 - auc: 0.8678 - val_loss: 0.4805 - val_auc: 0.7428
+Epoch 16/100
+755/755 - 21s - loss: 0.2497 - auc: 0.8741 - val_loss: 0.4857 - val_auc: 0.7505
+Epoch 17/100
+755/755 - 21s - loss: 0.2496 - auc: 0.8721 - val_loss: 0.4650 - val_auc: 0.7309
+Epoch 18/100
+755/755 - 21s - loss: 0.2507 - auc: 0.8703 - val_loss: 0.4721 - val_auc: 0.7406
+Epoch 19/100
+755/755 - 22s - loss: 0.2455 - auc: 0.8749 - val_loss: 0.4590 - val_auc: 0.7355
+
+Epoch 00019: ReduceLROnPlateau reducing learning rate to 4.999999873689376e-06.
+Epoch 20/100
+755/755 - 20s - loss: 0.2281 - auc: 0.8857 - val_loss: 0.4441 - val_auc: 0.7464
+Epoch 21/100
+755/755 - 23s - loss: 0.2206 - auc: 0.8941 - val_loss: 0.4493 - val_auc: 0.7415
+Restoring model weights from the end of the best epoch.
+Epoch 00021: early stopping
