@@ -84,12 +84,12 @@ class EntityEmbeddings:
         for col in categorical_features:
 
             # find the cardinality of each categorical column, and set appropriate embedding dimension
-            logger.debug(df[col].nunique(), df[col].max())
+            logger.debug(f"{df[col].nunique()}, {df[col].max()}")
             cardinality = int(df[col].nunique()) + 1
             # cardinality = int(df[col].max())+1
 
-            embedding_dim = max(min(cardinality//2, 100), 2)
-            logger.debug(f'{col}: cardinality : {cardinality} and embedding dim: {embedding_dim}')
+            embedding_dim = max(min(cardinality//2, 16), 2)
+            logger.debug(f"{col}: cardinality : {cardinality}, and embedding dim: {embedding_dim}")
 
             inp = Input(shape=(1,))
 
@@ -177,7 +177,7 @@ class EntityEmbeddings:
             )
 
             # get the lists of data to feed into the Keras model:
-            logger.debug("X train and validation shapes:", self.X_train_list[i].shape, self.X_val_list[i].shape)
+            logger.debug(f"X train and validation shapes: {self.X_train_list[i].shape}, {self.X_val_list[i].shape}")
 
             # Appending to train and validation lists
             x_embed_train, x_embed_val = self.embedding_preproc(self.X_train_list[i], self.X_val_list[i])

@@ -60,11 +60,14 @@ class GraphVesta:
 
         return 0
 
-    def prepare_neo4j_import(self):
+    def prepare_neo4j_import(self, create_bat=True):
         """
         Divide variables into node variables and relationship variables
         :return: 0 if the process was completed successfully
         """
+        # Transform variables with category dtype back to int32:
+        cat_dtype_cols = [x for x in self.x_train.columns if self.x_train[x].dtype == "category"]
+        self.x_train[cat_dtype_cols] = self.x_train[cat_dtype_cols].astype(int)
 
         # 1. Account nodes
         logger.info("Preparing and saving Account nodes")
@@ -98,7 +101,7 @@ class GraphVesta:
 
         # 3. Relationship edges
         logger.info("Preparing and saving Relationship nodes")
-        dtype_neo4j_dict = {"int64": "int", "float64": "float", "float32": "float", "object": "string"}
+        dtype_neo4j_dict = {"int64": "int", "int32": "int", "float64": "float", "float32": "float", "object": "string"}
         feature_dtypes = self.x_train.dtypes.replace(dtype_neo4j_dict)
         features = feature_dtypes.index
         dtypes = feature_dtypes.values
@@ -116,6 +119,9 @@ class GraphVesta:
         df_to_save.to_csv(
             f"{self.neo4j_root_dir}import/{self.save_prefix}rels.csv", header=False, index=False
         )
+
+        if create_bat:
+            self.create_bat_file()
 
         return 0
 

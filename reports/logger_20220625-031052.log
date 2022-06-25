@@ -1,0 +1,657 @@
+2022-06-25 03:10:52 Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2022-06-25 03:10:52 NumExpr defaulting to 8 threads.
+2022-06-25 03:10:54 Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2022-06-25 03:10:54 Creating converter from 7 to 5
+2022-06-25 03:10:54 Creating converter from 5 to 7
+2022-06-25 03:10:54 Creating converter from 7 to 5
+2022-06-25 03:10:54 Creating converter from 5 to 7
+2022-06-25 03:10:56 73, 72
+2022-06-25 03:10:56 addr2: cardinality : 74, and embedding dim: 16
+2022-06-25 03:10:56 102, 101
+2022-06-25 03:10:56 id_06: cardinality : 103, and embedding dim: 16
+2022-06-25 03:10:56 261, 260
+2022-06-25 03:10:56 id_33: cardinality : 262, and embedding dim: 16
+2022-06-25 03:10:56 4, 3
+2022-06-25 03:10:56 M4: cardinality : 5, and embedding dim: 2
+2022-06-25 03:10:56 1787, 1786
+2022-06-25 03:10:56 DeviceInfo: cardinality : 1788, and embedding dim: 16
+2022-06-25 03:10:56 342, 341
+2022-06-25 03:10:56 id_25: cardinality : 343, and embedding dim: 16
+2022-06-25 03:10:56 26, 25
+2022-06-25 03:10:56 id_22: cardinality : 27, and embedding dim: 13
+2022-06-25 03:10:56 5, 4
+2022-06-25 03:10:56 card4: cardinality : 6, and embedding dim: 3
+2022-06-25 03:10:56 131, 130
+2022-06-25 03:10:56 id_31: cardinality : 132, and embedding dim: 16
+2022-06-25 03:10:56 96, 95
+2022-06-25 03:10:56 id_26: cardinality : 97, and embedding dim: 16
+2022-06-25 03:10:57 5, 4
+2022-06-25 03:10:57 id_32: cardinality : 6, and embedding dim: 3
+2022-06-25 03:10:57 77, 76
+2022-06-25 03:10:57 id_01: cardinality : 78, and embedding dim: 16
+2022-06-25 03:10:57 8499, 8498
+2022-06-25 03:10:57 card1: cardinality : 8500, and embedding dim: 16
+2022-06-25 03:10:57 16, 15
+2022-06-25 03:10:57 id_04: cardinality : 17, and embedding dim: 8
+2022-06-25 03:10:57 95, 94
+2022-06-25 03:10:57 id_08: cardinality : 96, and embedding dim: 16
+2022-06-25 03:10:57 61, 60
+2022-06-25 03:10:57 R_emaildomain: cardinality : 62, and embedding dim: 16
+2022-06-25 03:10:57 94, 93
+2022-06-25 03:10:57 id_05: cardinality : 95, and embedding dim: 16
+2022-06-25 03:10:57 13, 12
+2022-06-25 03:10:57 id_24: cardinality : 14, and embedding dim: 7
+2022-06-25 03:10:57 4, 3
+2022-06-25 03:10:57 id_15: cardinality : 5, and embedding dim: 2
+2022-06-25 03:10:57 4, 3
+2022-06-25 03:10:57 ProductCD: cardinality : 5, and embedding dim: 2
+2022-06-25 03:10:57 4, 3
+2022-06-25 03:10:57 id_23: cardinality : 5, and embedding dim: 2
+2022-06-25 03:10:57 55, 54
+2022-06-25 03:10:57 id_13: cardinality : 56, and embedding dim: 16
+2022-06-25 03:10:57 105, 104
+2022-06-25 03:10:57 id_17: cardinality : 106, and embedding dim: 16
+2022-06-25 03:10:57 483, 482
+2022-06-25 03:10:57 card2: cardinality : 484, and embedding dim: 16
+2022-06-25 03:10:57 107, 106
+2022-06-25 03:10:57 card5: cardinality : 108, and embedding dim: 16
+2022-06-25 03:10:57 63, 62
+2022-06-25 03:10:57 id_10: cardinality : 64, and embedding dim: 16
+2022-06-25 03:10:57 25, 24
+2022-06-25 03:10:57 id_03: cardinality : 26, and embedding dim: 13
+2022-06-25 03:10:57 85, 84
+2022-06-25 03:10:57 id_07: cardinality : 86, and embedding dim: 16
+2022-06-25 03:10:57 26, 25
+2022-06-25 03:10:57 id_14: cardinality : 27, and embedding dim: 13
+2022-06-25 03:10:57 19, 18
+2022-06-25 03:10:57 id_18: cardinality : 20, and embedding dim: 10
+2022-06-25 03:10:57 523, 522
+2022-06-25 03:10:57 id_19: cardinality : 524, and embedding dim: 16
+2022-06-25 03:10:57 4, 3
+2022-06-25 03:10:57 card6: cardinality : 5, and embedding dim: 2
+2022-06-25 03:10:57 491, 490
+2022-06-25 03:10:57 id_21: cardinality : 492, and embedding dim: 16
+2022-06-25 03:10:57 76, 75
+2022-06-25 03:10:57 id_30: cardinality : 77, and embedding dim: 16
+2022-06-25 03:10:57 5, 4
+2022-06-25 03:10:57 id_34: cardinality : 6, and embedding dim: 3
+2022-06-25 03:10:57 104, 103
+2022-06-25 03:10:57 card3: cardinality : 105, and embedding dim: 16
+2022-06-25 03:10:57 395, 394
+2022-06-25 03:10:57 id_20: cardinality : 396, and embedding dim: 16
+2022-06-25 03:10:57 47, 46
+2022-06-25 03:10:57 id_09: cardinality : 48, and embedding dim: 16
+2022-06-25 03:10:57 366, 365
+2022-06-25 03:10:57 id_11: cardinality : 367, and embedding dim: 16
+2022-06-25 03:10:57 256, 255
+2022-06-25 03:10:57 addr1: cardinality : 257, and embedding dim: 16
+2022-06-25 03:10:57 60, 59
+2022-06-25 03:10:57 P_emaildomain: cardinality : 61, and embedding dim: 16
+2022-06-25 03:10:57 None
+2022-06-25 03:10:57 X train and validation shapes: (96636, 390), (47597, 390)
+2022-06-25 03:11:20 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:11:22 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:11:39 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:11:41 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:11:49 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:11:52 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:11:58 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:12:00 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:12:16 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:12:18 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:12:35 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:12:37 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:12:40 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:12:53 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:12:55 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:13:12 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:13:14 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:13:30 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:13:32 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:13:49 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:13:51 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:14:07 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:14:09 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:14:25 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:14:27 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:14:36 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:14:38 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:14:44 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:14:46 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:15:03 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:15:05 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:15:21 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:15:23 Only one class present in y_true. ROC AUC score is not defined in that case.
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Temp\tmp77m0cu0g.py", line 19, in fallback_auc
+    retval__1 = ag__.converted_call(ag__.ld(roc_auc_score), (ag__.ld(y_true_), ag__.ld(y_pred_)), None, fscope_1)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 340, in converted_call
+    return _call_unconverted(f, args, kwargs, options, False)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 464, in _call_unconverted
+    return f(*args)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 569, in roc_auc_score
+    return _average_binary_score(
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_base.py", line 75, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\sklearn\metrics\_ranking.py", line 338, in _binary_roc_auc_score
+    raise ValueError(
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.
+2022-06-25 03:15:24 addr2 dim: 16
+2022-06-25 03:15:24 id_06 dim: 16
+2022-06-25 03:15:24 id_33 dim: 16
+2022-06-25 03:15:24 M4 dim: 2
+2022-06-25 03:15:24 DeviceInfo dim: 16
+2022-06-25 03:15:24 id_25 dim: 16
+2022-06-25 03:15:24 id_22 dim: 13
+2022-06-25 03:15:24 card4 dim: 3
+2022-06-25 03:15:24 id_31 dim: 16
+2022-06-25 03:15:24 id_26 dim: 16
+2022-06-25 03:15:24 id_32 dim: 3
+2022-06-25 03:15:24 id_01 dim: 16
+2022-06-25 03:15:24 card1 dim: 16
+2022-06-25 03:15:24 id_04 dim: 8
+2022-06-25 03:15:24 id_08 dim: 16
+2022-06-25 03:15:24 R_emaildomain dim: 16
+2022-06-25 03:15:24 id_05 dim: 16
+2022-06-25 03:15:24 id_24 dim: 7
+2022-06-25 03:15:24 id_15 dim: 2
+2022-06-25 03:15:24 ProductCD dim: 2
+2022-06-25 03:15:24 id_23 dim: 2
+2022-06-25 03:15:24 id_13 dim: 16
+2022-06-25 03:15:24 id_17 dim: 16
+2022-06-25 03:15:24 card2 dim: 16
+2022-06-25 03:15:24 card5 dim: 16
+2022-06-25 03:15:24 id_10 dim: 16
+2022-06-25 03:15:24 id_03 dim: 13
+2022-06-25 03:15:24 id_07 dim: 16
+2022-06-25 03:15:24 id_14 dim: 13
+2022-06-25 03:15:24 id_18 dim: 10
+2022-06-25 03:15:24 id_19 dim: 16
+2022-06-25 03:15:24 card6 dim: 2
+2022-06-25 03:15:24 id_21 dim: 16
+2022-06-25 03:15:24 id_30 dim: 16
+2022-06-25 03:15:24 id_34 dim: 3
+2022-06-25 03:15:24 card3 dim: 16
+2022-06-25 03:15:24 id_20 dim: 16
+2022-06-25 03:15:24 id_09 dim: 16
+2022-06-25 03:15:24 id_11 dim: 16
+2022-06-25 03:15:24 addr1 dim: 16
+2022-06-25 03:15:24 P_emaildomain dim: 16
+2022-06-25 03:15:24 Transforming categorical features
+2022-06-25 03:20:24 pickle loaded: C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\jedi\third_party\typeshed\stdlib\2and3\builtins.pyi
+2022-06-25 03:20:24 pickle loaded: C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\jedi\third_party\typeshed\stdlib\3\sys.pyi
+2022-06-25 03:20:42 diff parser start
+2022-06-25 03:20:42 line_lengths old: 1; new: 1
+2022-06-25 03:20:42 -> code[replace] old[1:1] new[1:1]
+2022-06-25 03:20:42 parse_part from 1 to 1 (to 0 in part parser)
+2022-06-25 03:20:42 diff parser end
+2022-06-25 03:20:42 pickle loaded: C:\Users\user\anaconda3\envs\tf_gpu\lib\typing.py
+2022-06-25 03:20:42 pickle loaded: C:\Users\user\anaconda3\envs\tf_gpu\lib\site-packages\jedi\third_party\typeshed\stdlib\3\typing.pyi
+2022-06-25 03:20:43 diff parser start
+2022-06-25 03:20:43 line_lengths old: 1; new: 1
+2022-06-25 03:20:43 -> code[replace] old[1:1] new[1:1]
+2022-06-25 03:20:43 parse_part from 1 to 1 (to 0 in part parser)
+2022-06-25 03:20:43 diff parser end
+2022-06-25 03:20:43 diff parser start
+2022-06-25 03:20:43 line_lengths old: 1; new: 1
+2022-06-25 03:20:43 -> code[replace] old[1:1] new[1:1]
+2022-06-25 03:20:43 parse_part from 1 to 1 (to 0 in part parser)
+2022-06-25 03:20:43 diff parser end
+2022-06-25 03:20:43 diff parser start
+2022-06-25 03:20:43 line_lengths old: 1; new: 1
+2022-06-25 03:20:43 -> code[replace] old[1:1] new[1:1]
+2022-06-25 03:20:43 parse_part from 1 to 1 (to 0 in part parser)
+2022-06-25 03:20:43 diff parser end
+2022-06-25 03:20:45 diff parser start
+2022-06-25 03:20:45 line_lengths old: 1; new: 1
+2022-06-25 03:20:45 -> code[replace] old[1:1] new[1:1]
+2022-06-25 03:20:45 parse_part from 1 to 1 (to 0 in part parser)
+2022-06-25 03:20:45 diff parser end

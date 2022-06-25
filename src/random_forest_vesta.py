@@ -61,7 +61,7 @@ class RF:
 
         return 0
 
-    def cv_base_model(self, verbose=1, save_model=True, name_prefix="ieee_baseline_rf_", print_val_scoring=False):
+    def cv_base_model(self, verbose=1, save_model=True, name_prefix="vesta_baseline_rf_", print_val_scoring=False):
         for i, X in enumerate(self.X_train_list):
             model = RandomForestClassifier(n_jobs=self.n_jobs)
 
