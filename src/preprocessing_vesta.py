@@ -4,12 +4,14 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import miceforest
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, StandardScaler
 # noinspection PyUnresolvedReferences
 from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer # noqa
+from sklearn.decomposition import PCA
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 import pickle
+import missingno
 logger = logging.getLogger("preprocessing")
 
 
@@ -87,6 +89,16 @@ class Preprocessing:
 
         return 0
 
+    def plot_missing_patterns(self, save_fig=True, fig_name="vesta_train_missing_patterns.png"):
+        fig = missingno.heatmap(self.df_train, fontsize=6)
+        fig_copy = fig.get_figure()
+        if save_fig:
+            if not os.path.exists("../reports/figures/"):
+                os.mkdir("../reports/figures/")
+            fig_copy.savefig(f"../reports/figures/{fig_name}", bbox_inches="tight")
+
+        return 0
+
     def optimize_dtypes(self, save_target=False, save_cat_vars=False,
                         save_target_name="ieee_train_y", cat_vars_name="categorical_features"):
 
@@ -139,12 +151,14 @@ class Preprocessing:
             with open(f"../data/processed/{save_target_name}.pkl", "wb") as handle:
                 pickle.dump(self.df_train[self.target].values, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
+        self.vars_bool.remove(self.target)
+
         # Save names of categorical features
         if save_cat_vars:
             if not os.path.exists("../data/interim/"):
                 os.mkdir("../data/interim/")
             with open(f"../data/interim/{cat_vars_name}.pkl", "wb") as handle:
-                pickle.dump(self.vars_cat, handle, protocol=pickle.HIGHEST_PROTOCOL)
+                pickle.dump(self.vars_cat+self.vars_bool, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0
 
@@ -183,7 +197,7 @@ class Preprocessing:
 
         return 0
 
-    def iteratively_impute(self, max_iter=10, verbose=0, save_dataset=True, save_name="ieee_train_imputed",
+    def iteratively_impute(self, max_iter=10, verbose=0, save_dataset=True, save_name="vesta_train_imputed",
                            nearest_features=100, n_jobs=1):
         imp_num = IterativeImputer(
             estimator=RandomForestRegressor(n_jobs=n_jobs),
@@ -211,7 +225,7 @@ class Preprocessing:
 
         return 0
 
-    def impute_miceforest(self, save_datasets=True, return_datasets=False):
+    def impute_miceforest(self, save_datasets=True, return_datasets=False, save_name="vesta_train_imputed"):
         # https://morioh.com/p/e19cd87c66e3
 
         amp = miceforest.ampute_data(self.df_train, perc=0.25, random_state=self.seed)
@@ -233,9 +247,41 @@ class Preprocessing:
                 os.mkdir("../data/interim/")
             for i in range(self.n_imp_datasets):
                 completed_dataset = kds.complete_data(dataset=i, inplace=False)
-                completed_dataset.to_csv(f"../data/interim/ieee_train_mf_imputed_{i}.csv", index=False)
+                completed_dataset.to_csv(f"../data/interim/{save_name}.csv", index=False)
 
         if return_datasets:
             return kds
+
+        return 0
+
+    def pca(self, imputed_df_name="vesta_train_imputed.pkl", cat_vars_name="categorical_features.pkl",
+            save_scaler=True, save_scaler_name="imp_num_scaler.pkl", pca_res_name="vesta_train_pca.pkl",
+            pca_model_name="pca_vesta_num.pkl", merge_with_mca=True, merge_name="vesta_train_pca_mca.pkl"):
+
+        with open(f"../data/interim/{imputed_df_name}", "rb") as handle:
+            self.df_train = pickle.load(handle)
+        with open(f"../data/interim/{cat_vars_name}", "rb") as handle:
+            self.vars_cat = pickle.load(handle)
+
+        sc = StandardScaler()
+        self.df_train[self.vars_num] = sc.fit_transform(self.df_train[self.vars_num])
+        if save_scaler:
+            with open(f"../models/{save_scaler_name}", "wb") as handle:
+                pickle.dump(sc, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+        pca = PCA(n_components=0.95)
+        pca_res = pca.fit_transform(self.df_train[self.vars_num])
+        with open(f"../models/{pca_model_name}", "wb") as handle:
+            pickle.dump(pca, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        # self.df_train.drop(self.vars_num, axis=1, inplace=True)
+        # self.df_train = pd.concat([self.df_train, pca_res], axis=1)
+
+        with open(f"../data/interim/{pca_res_name}", "wb") as handle:
+            pickle.dump(pca_res, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+        if merge_with_mca:
+            train_mca = pd.read_pickle("../data/interim/vesta_train_mca.pkl")
+            with open(f"../data/processed/{merge_name}", "wb") as handle:
+                pickle.dump(np.hstack((train_mca, pca_res)), handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0

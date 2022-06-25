@@ -286,7 +286,7 @@ class GraphVesta:
                 with open(f"../data/processed/{self.save_prefix}graph_train_0.pkl", "wb") as handle:
                     pickle.dump(self.x_train, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-        return metrics_df
+        return 0
 
     def one_mode_projection(self):
         """
