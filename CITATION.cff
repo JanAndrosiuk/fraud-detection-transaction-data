@@ -1,0 +1,8 @@
+@misc{androsiuk2022,
+  author = {Androsiuk, Jan},
+  title = {Fraud detection methods in transaction data},
+  year = {2022},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/JanAndrosiuk/fraud-detection-transaction-data}}
+}

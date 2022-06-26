@@ -2,6 +2,9 @@ from src.setup_logger import *
 from graphdatascience import GraphDataScience
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
+import pickle
+from sklearn.decomposition import PCA
 logger = logging.getLogger("PreprocessingElliptic")
 
 
@@ -70,7 +73,7 @@ class PreprocessingElliptic:
 
         return 0
 
-    def prepare_train_set(self, erase_graph_df=False):
+    def prepare_train_set(self, erase_graph_df=False, save_target=True, save_target_name="elliptic_train_target.pkl"):
 
         self.df_edges = self.df_edges.merge(
             self.df_nodes.drop("label", axis=1).add_suffix("_from"), left_on="txId1", right_on="txId_from"
@@ -84,8 +87,39 @@ class PreprocessingElliptic:
         )
         self.df_edges.drop(["class_from", "class_to"], axis=1, inplace=True)
         self.train = self.df_edges
+        self.train.drop(["0_from", "0_to"], axis=1, inplace=True)
+
+        if save_target:
+            with open(f"../data/processed/{save_target_name}", "wb") as handle:
+                pickle.dump(self.train["target"], handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+        self.train.drop(["target"], axis=1, inplace=True)
 
         if erase_graph_df:
             self.df_nodes, self.df_edges = None, None
+
+        return 0
+
+    def pca(self, save_scaler=True, save_scaler_name="elliptic_scaler.pkl",
+            pca_res_name="elliptic_train_pca.pkl",
+            pca_model_name="pca_elliptic.pkl",
+            save_pca_cols=True, pca_cols_name="elliptic_train_pca_cols.pkl"):
+
+        sc = StandardScaler()
+        self.train[self.train.columns] = sc.fit_transform(self.train[self.train.columns])
+        if save_scaler:
+            with open(f"../models/{save_scaler_name}", "wb") as handle:
+                pickle.dump(sc, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        pca = PCA(n_components=0.95)
+        logger.info("Performing PCA on numerical variables")
+        pca_res = pca.fit_transform(self.train)
+        with open(f"../models/{pca_model_name}", "wb") as handle:
+            pickle.dump(pca, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        with open(f"../data/processed/{pca_res_name}", "wb") as handle:
+            pickle.dump(pca_res, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        if save_pca_cols:
+            cols = [f"pca_{x}" for x in range(pca_res.shape[1])]
+            with open(f"../data/processed/{pca_cols_name}", "wb") as handle:
+                pickle.dump(cols, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0

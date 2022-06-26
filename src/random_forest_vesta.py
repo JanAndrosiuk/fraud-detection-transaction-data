@@ -3,8 +3,10 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import RepeatedStratifiedKFold, RandomizedSearchCV, cross_validate
+from imblearn.ensemble import BalancedRandomForestClassifier
 from sklearn.metrics import make_scorer, accuracy_score, precision_score, recall_score, f1_score, \
     roc_curve, auc, precision_recall_curve
+from lightgbm import LGBMClassifier
 import pickle
 import matplotlib.pyplot as plt
 import re
@@ -33,20 +35,19 @@ class RF:
         self.n_jobs = n_jobs
         self.cv_res = []
 
-    def load_data(self, dataset_final_pattern=r"ieee_train_final_", with_pickle=True, exclude_cols=None):
-        if exclude_cols is None:
-            exclude_cols = []
+    def load_data(self, dataset_final_pattern=r"ieee_train_final_", with_pickle=True):
+        # if exclude_cols is None:
+        #     exclude_cols = []
         # Search for imputed datasets
         path_list = os.listdir(self.imp_path)
 
         if with_pickle:
-            x_path_list = list(filter(re.compile(dataset_final_pattern+r"\d"+r"\.pkl").match, path_list))
+            x_path_list = list(filter(re.compile(dataset_final_pattern+r"\.pkl").match, path_list))
 
             # Append those datasets to list
             for p in x_path_list:
                 with open(self.imp_path+p, "rb") as h:
-                    self.X_train_list.append(pickle.load(h).drop(exclude_cols, axis=1))
-
+                    self.X_train_list.append(pickle.load(h))
             # Load target vector
             with open(self.y_train_path, "rb") as h:
                 self.y_train = pickle.load(h)
@@ -63,11 +64,15 @@ class RF:
 
     def cv_base_model(self, verbose=1, save_model=True, name_prefix="vesta_baseline_rf_", print_val_scoring=False):
         for i, X in enumerate(self.X_train_list):
-            model = RandomForestClassifier(n_jobs=self.n_jobs)
+            # model = RandomForestClassifier(n_jobs=self.n_jobs, class_weight="balanced_subsample")
+            # model = BalancedRandomForestClassifier(n_jobs=self.n_jobs, random_state=self.seed)
+            model = LGBMClassifier(
+                n_estimators=400, class_weight="balanced", n_jobs=self.n_jobs, random_state=self.seed
+            )
 
             cv_scores = cross_validate(
-                model, X, self.y_train, scoring=self.scoring, cv=self.cv,
-                n_jobs=self.n_jobs, error_score='raise', verbose=verbose
+                model, X, self.y_train, scoring=self.scoring, cv=self.cv, n_jobs=self.n_jobs, error_score='raise',
+                verbose=verbose, return_estimator=True
             )
             if print_val_scoring:
                 print(f"""

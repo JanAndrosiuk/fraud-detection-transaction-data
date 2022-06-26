@@ -63,7 +63,7 @@ class Preprocessing:
 
         return 0
 
-    def plot_nans_var(self, save_plot=False, plot_name="nan_var_ieee"):
+    def plot_nans_var(self, save_plot=False, plot_name="nan_var_vesta"):
 
         nan_sum = self.df_train.isna().sum()/self.df_train.shape[0]
         nan_sum.sort_values(ascending=False, inplace=True)
@@ -84,7 +84,7 @@ class Preprocessing:
         if save_plot:
             if not os.path.exists("../reports/figures/"):
                 os.mkdir("../reports/figures/")
-            plt.savefig(f"../reports/figures/{plot_name}.png")
+            plt.savefig(f"../reports/figures/{plot_name}.png", bbox_inches="tight")
         plt.show()
 
         return 0
@@ -256,7 +256,8 @@ class Preprocessing:
 
     def pca(self, imputed_df_name="vesta_train_imputed.pkl", cat_vars_name="categorical_features.pkl",
             save_scaler=True, save_scaler_name="imp_num_scaler.pkl", pca_res_name="vesta_train_pca.pkl",
-            pca_model_name="pca_vesta_num.pkl", merge_with_mca=True, merge_name="vesta_train_pca_mca.pkl"):
+            pca_model_name="pca_vesta_num.pkl", merge_with_mca=True, merge_name="vesta_train_pca_mca.pkl",
+            save_pca_mca_cols=True, pca_mca_cols_name="vesta_train_pca_mca_cols.pkl"):
 
         with open(f"../data/interim/{imputed_df_name}", "rb") as handle:
             self.df_train = pickle.load(handle)
@@ -281,6 +282,11 @@ class Preprocessing:
 
         if merge_with_mca:
             train_mca = pd.read_pickle("../data/interim/vesta_train_mca.pkl")
+            if save_pca_mca_cols:
+                merge_cols = [f"mca_{x}" for x in range(train_mca.shape[1])] + \
+                             [f"pca_{x}" for x in range(pca_res.shape[1])]
+                with open(f"../data/processed/{pca_mca_cols_name}", "wb") as handle:
+                    pickle.dump(merge_cols, handle, protocol=pickle.HIGHEST_PROTOCOL)
             with open(f"../data/processed/{merge_name}", "wb") as handle:
                 pickle.dump(np.hstack((train_mca, pca_res)), handle, protocol=pickle.HIGHEST_PROTOCOL)
 
