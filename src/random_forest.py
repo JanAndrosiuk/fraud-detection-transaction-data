@@ -3,10 +3,10 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import RepeatedStratifiedKFold, RandomizedSearchCV, cross_validate
-from imblearn.ensemble import BalancedRandomForestClassifier
+from imblearn.ensemble import BalancedRandomForestClassifier # noqa
 from sklearn.metrics import make_scorer, accuracy_score, precision_score, recall_score, f1_score, \
     roc_curve, auc, precision_recall_curve
-from lightgbm import LGBMClassifier
+from lightgbm import LGBMClassifier # noqa
 import pickle
 import matplotlib.pyplot as plt
 import re
@@ -16,15 +16,13 @@ logger = logging.getLogger("RandomForest")
 
 class RF:
     def __init__(self, imp_datasets_dir="../data/processed/", y_train_path="../data/processed/ieee_train_y.pkl",
-                 target="isFraud", seed=2022, cv_n_splits=10, n_jobs=-1):
+                 target="isFraud", n_jobs=-1):
         self.imp_path = imp_datasets_dir
         self.y_train_path = y_train_path
         self.y_train = None
         self.target = target
         self.X_train_list, self.X_val_list, self.y_train_list, self.y_val_list = [], [], [], []
-        self.seed = seed
-        self.cv_n_splits = cv_n_splits
-        self.cv = RepeatedStratifiedKFold(n_splits=cv_n_splits, random_state=self.seed, n_repeats=3)
+        self.cv_n_splits, self.cv = None, None
         self.scoring = {
             "accuracy": make_scorer(accuracy_score),
             "precision": make_scorer(precision_score),
@@ -62,18 +60,25 @@ class RF:
 
         return 0
 
-    def cv_base_model(self, verbose=1, save_model=True, name_prefix="vesta_baseline_rf_", print_val_scoring=False):
+    def cv_base_model(self, verbose=1, save_model=True, name_prefix="vesta_baseline_rf_", print_val_scoring=False,
+                      return_scoring=False, seed=2022, cv_n_splits=10):
         for i, X in enumerate(self.X_train_list):
-            # model = RandomForestClassifier(n_jobs=self.n_jobs, class_weight="balanced_subsample")
+            self.cv = RepeatedStratifiedKFold(n_splits=cv_n_splits, random_state=seed, n_repeats=3)
+            model = RandomForestClassifier(n_jobs=self.n_jobs, class_weight="balanced_subsample", random_state=seed)
             # model = BalancedRandomForestClassifier(n_jobs=self.n_jobs, random_state=self.seed)
-            model = LGBMClassifier(
-                n_estimators=400, class_weight="balanced", n_jobs=self.n_jobs, random_state=self.seed
-            )
+            # model = LGBMClassifier(
+            #     n_estimators=400, class_weight="balanced", n_jobs=self.n_jobs, random_state=self.seed
+            # )
 
             cv_scores = cross_validate(
                 model, X, self.y_train, scoring=self.scoring, cv=self.cv, n_jobs=self.n_jobs, error_score='raise',
                 verbose=verbose, return_estimator=True
             )
+            cv_scores_copy = cv_scores.copy()
+            for k in cv_scores.keys():
+                if k in ["fit_time", "score_time", "estimator"]:
+                    cv_scores_copy.pop(k)
+
             if print_val_scoring:
                 print(f"""
                     Mean validation results:
@@ -92,10 +97,13 @@ class RF:
                 with open(f"../models/{name_prefix}{i}.pkl", "wb") as handle:
                     pickle.dump(self.cv_base_models[i], handle, protocol=pickle.HIGHEST_PROTOCOL)
 
+        if return_scoring:
+            return cv_scores_copy # noqa
+
         return 0
 
     def tune_model(self, verbose=1, print_val_scoring=True, n_param_samples=20, save_model=True,
-                   name_prefix="ieee_baseline_rf_tuned_"):
+                   name_prefix="ieee_baseline_rf_tuned_", seed=2022):
 
         for i in range(len(self.cv_base_models)):
 
@@ -117,7 +125,7 @@ class RF:
 
             model_tuned = RandomizedSearchCV(
                 estimator=self.cv_base_models[i], param_distributions=random_grid, n_iter=n_param_samples,
-                scoring=self.scoring, cv=self.cv, verbose=verbose, random_state=self.seed,
+                scoring=self.scoring, cv=self.cv, verbose=verbose, random_state=seed,
                 n_jobs=self.n_jobs, error_score="raise", refit="f1_score"
             )
 

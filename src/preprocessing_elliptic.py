@@ -27,7 +27,7 @@ class PreprocessingElliptic:
         self.df_edges["type"] = "transaction"
         self.gds, self.db_uri, self.user, self.password, self.graph_name = None, db_uri, user, password, graph_name
         self.neo4j_root_dir, self.node_label, self.rel_type = neo4j_root_dir, node_label, rel_type
-        self.train = None
+        self.train, self.metrics_cols = None, None
 
     def export_neo4j(self):
 
@@ -73,7 +73,8 @@ class PreprocessingElliptic:
 
         return 0
 
-    def prepare_train_set(self, erase_graph_df=False, save_target=True, save_target_name="elliptic_train_target.pkl"):
+    def prepare_train_set(self, erase_graph_df=False, save_target=True, save_target_name="elliptic_train_target.pkl",
+                          delete_sign=True):
 
         self.df_edges = self.df_edges.merge(
             self.df_nodes.drop("label", axis=1).add_suffix("_from"), left_on="txId1", right_on="txId_from"
@@ -81,7 +82,11 @@ class PreprocessingElliptic:
         self.df_edges = self.df_edges.merge(
             self.df_nodes.drop("label", axis=1).add_suffix("_to"), left_on="txId2", right_on="txId_to"
         )
-        self.df_edges.drop(["type", "txId1", "txId2", "txId_from", "txId_to"], axis=1, inplace=True)
+
+        # Whether to keep "from" and "to"
+        if delete_sign:
+            self.df_edges.drop(["type", "txId1", "txId2", "txId_from", "txId_to"], axis=1, inplace=True)
+        self.df_edges.drop(["type", "txId1", "txId2"], axis=1, inplace=True)
         self.df_edges["target"] = self.df_edges[["class_from", "class_to"]].apply(
             lambda x: 1 if x["class_from"] == 1 or x["class_to"] == 1 else 0, axis=1
         )
@@ -121,5 +126,95 @@ class PreprocessingElliptic:
             cols = [f"pca_{x}" for x in range(pca_res.shape[1])]
             with open(f"../data/processed/{pca_cols_name}", "wb") as handle:
                 pickle.dump(cols, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+        return 0
+
+    def append_metrics(self, save_dataset=True, delete_sign=True, save_dataset_name="elliptic_metrics_df.pkl"):
+
+        init_cols = self.train.columns
+        graph_name = self.graph_name
+        self.create_graph()
+
+        # Calculate centrality metrics
+        logger.info("Calculating degree")
+        degree = self.gds.run_cypher(
+            f"""
+            call gds.degree.stream("{self.graph_name}")
+            yield nodeId, score as degree
+            return coalesce(gds.util.asNode(nodeId).id, "") as id, degree
+            """
+        )
+        logger.info("Calculating pagerank")
+        pagerank = self.gds.run_cypher(
+            f"""
+                CALL gds.pageRank.stream("{graph_name}")
+                yield nodeId, score as pagerank return pagerank
+                """
+        )
+        logger.info("Calculating hits scores")
+        hits = self.gds.run_cypher(
+            f"""
+                CALL gds.alpha.hits.stream("{graph_name}", {{hitsIterations: 20}})
+                yield nodeId, values
+                return values.auth as hits_auth, values.hub as hits_hub
+                """
+        )
+        logger.info("Calculating betweenness")
+        betweenness = self.gds.run_cypher(
+            f"""
+                CALL gds.betweenness.stream("{graph_name}")
+                yield nodeId, score as betweenness return betweenness
+                """
+        )
+        logger.info("Calculating wcc size")
+        wcc_size = self.gds.run_cypher(
+            f"""
+                CALL gds.wcc.stream("{graph_name}")
+                yield nodeId, componentId
+                """
+        )
+        logger.info("Calculating louvain community sizes")
+        louvain_size = self.gds.run_cypher(
+            f"call gds.louvain.stream('{graph_name}') yield nodeId, communityId"
+        )
+
+        # Calculate size of the WCC
+        logger.debug("Extracting wcc info")
+        map_dict = wcc_size.groupby("componentId").size().to_frame()
+        map_dict.columns = ["wcc_size"]
+        wcc_size = wcc_size.merge(map_dict, left_on="componentId", right_index=True)\
+            .drop(["nodeId", "componentId"], axis=1)
+
+        # Calculate size of the community each node belongs to
+        logger.debug("Extracting louvain communities' info")
+        map_dict = louvain_size.groupby("communityId").size().to_frame()
+        map_dict.columns = ["community_size"]
+        louvain_size = louvain_size.merge(map_dict, left_on="communityId", right_index=True)\
+            .drop(["nodeId", "communityId"], axis=1)
+
+        # Collect all metrics in one dataframe describing each node
+        logger.debug("Concatenating metrics")
+        metrics_df = pd.concat(
+            [degree, pagerank, hits, betweenness, wcc_size, louvain_size], axis=1
+        )
+
+        # logger.info("Merging and saving training dataset with graph features")
+        metrics_df["id"] = metrics_df["id"].astype(int)
+        self.train = self.train.merge(
+            metrics_df.add_suffix("_from"), how="left", left_on="txId_from", right_on="id_from"
+        )
+        self.train = self.train.merge(
+            metrics_df.add_suffix("_to"), how="left", left_on="txId_to", right_on="id_to"
+        )
+
+        if delete_sign:
+            self.train.drop(["id_from", "id_to", "txId_from", "txId_to"], axis=1, inplace=True)
+
+        self.metrics_cols = [x for x in list(self.train.columns) if x not in init_cols]
+        logger.debug(f"Metric columns: {self.metrics_cols}")
+
+        if save_dataset:
+            with open(f"../data/processed/{save_dataset_name}", "wb") as h:
+                pickle.dump(self.train, h, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0

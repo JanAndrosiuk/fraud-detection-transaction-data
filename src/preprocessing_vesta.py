@@ -70,7 +70,7 @@ class Preprocessing:
         nan_cols = nan_sum.index.values
 
         plt.figure(figsize=(20, 8))
-        plt.bar(nan_cols, nan_sum)
+        plt.bar(nan_cols, nan_sum, width=0.5)
         plt.xticks(rotation=90, fontsize=6)
         plt.xlabel("Training Set Variable", size=12, **self.csfont)
         plt.ylabel("Percentage of missingness", size=12, **self.csfont)
@@ -84,23 +84,23 @@ class Preprocessing:
         if save_plot:
             if not os.path.exists("../reports/figures/"):
                 os.mkdir("../reports/figures/")
-            plt.savefig(f"../reports/figures/{plot_name}.png", bbox_inches="tight")
+            plt.savefig(f"../reports/figures/{plot_name}.pdf", bbox_inches="tight")
         plt.show()
 
         return 0
 
-    def plot_missing_patterns(self, save_fig=True, fig_name="vesta_train_missing_patterns.png"):
-        fig = missingno.heatmap(self.df_train, fontsize=6)
+    def plot_missing_patterns(self, save_fig=True, fig_name="vesta_train_missing_patterns"):
+        fig = missingno.heatmap(self.df_train, fontsize=6, labels=False)
         fig_copy = fig.get_figure()
         if save_fig:
             if not os.path.exists("../reports/figures/"):
                 os.mkdir("../reports/figures/")
-            fig_copy.savefig(f"../reports/figures/{fig_name}", bbox_inches="tight")
+            fig_copy.savefig(f"../reports/figures/{fig_name}.pdf", bbox_inches="tight")
 
         return 0
 
-    def optimize_dtypes(self, save_target=False, save_cat_vars=False,
-                        save_target_name="ieee_train_y", cat_vars_name="categorical_features"):
+    def optimize_dtypes(self, save_target=False, save_target_name="ieee_train_y",
+                        save_cat_vars=False, cat_vars_name="categorical_features"):
 
         all_categorical = [
             "ProductCD", "card1", "card2", "card3", "card4", "card5", "card6",
@@ -162,8 +162,9 @@ class Preprocessing:
 
         return 0
 
-    def label_encoding(self, save_encodings=False, save_dtypes=False,
-                       save_dtypes_name="ieee_train_dtypes", save_encodings_name="ieee_train_label_encodings"):
+    def label_encoding(self, save_encodings=False, save_encodings_name="ieee_train_label_encodings",
+                       save_dtypes=False, save_dtypes_name="ieee_train_dtypes",
+                       save_encoded_data=False, encoded_data_name="vesta_encoded.pkl"):
 
         # Fit the encoder of target labels (from string to numeric)
         for col in self.vars_cat:
@@ -194,6 +195,12 @@ class Preprocessing:
                 os.mkdir("../data/interim/")
             with open(f"../data/interim/{save_encodings_name}.pkl", "wb") as handle:
                 pickle.dump(self.encoder_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+        if save_encoded_data:
+            if not os.path.exists("../data/interim/"):
+                os.mkdir("../data/interim/")
+            with open(f"../data/interim/{encoded_data_name}", "wb") as handle:
+                pickle.dump(self.df_train, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         return 0
 
@@ -257,7 +264,8 @@ class Preprocessing:
     def pca(self, imputed_df_name="vesta_train_imputed.pkl", cat_vars_name="categorical_features.pkl",
             save_scaler=True, save_scaler_name="imp_num_scaler.pkl", pca_res_name="vesta_train_pca.pkl",
             pca_model_name="pca_vesta_num.pkl", merge_with_mca=True, merge_name="vesta_train_pca_mca.pkl",
-            save_pca_mca_cols=True, pca_mca_cols_name="vesta_train_pca_mca_cols.pkl"):
+            save_pca_mca_cols=True, pca_mca_cols_name="vesta_train_pca_mca_cols.pkl", scree_plot=True,
+            save_scree=True, scree_name="pca_num_vesta"):
 
         with open(f"../data/interim/{imputed_df_name}", "rb") as handle:
             self.df_train = pickle.load(handle)
@@ -279,6 +287,22 @@ class Preprocessing:
 
         with open(f"../data/interim/{pca_res_name}", "wb") as handle:
             pickle.dump(pca_res, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+        if scree_plot:
+            pc_values = np.arange(pca.n_components_) + 1
+            plt.plot(pc_values, pca.explained_variance_ratio_, marker='o', markersize=1,
+                     c=plt.cm.Paired(1), linewidth=1, label="Explained variance")
+            cum_var = [np.sum(pca.explained_variance_ratio_[:i+1])
+                       for i in range(len(pca.explained_variance_ratio_))]
+            plt.plot(pc_values, cum_var, marker='o', markersize=1,
+                     c=plt.cm.Paired(3), linewidth=1, label="Explained cumulative variance")
+            ax = plt.gca()
+            ax.set_facecolor("white")
+            plt.legend()
+            plt.title(None)
+            plt.xlabel('Principal Component')
+            plt.ylabel('Variance (cumulative) Explained')
+            plt.savefig(f"../reports/figures/{scree_name}.pdf", bbox_inches="tight", transparent=True)
 
         if merge_with_mca:
             train_mca = pd.read_pickle("../data/interim/vesta_train_mca.pkl")
