@@ -202,3 +202,44 @@ class RF:
         plt.show()
 
         return 0
+
+    def plot_feature_importance(self, save_plot=True, plot_name="elliptic_graph_feat_imp.pdf", show=False,
+                                read_model_name="elliptic_graph_rf_0.pkl"):
+
+        # https://vitalflux.com/feature-importance-random-forest-classifier-python/
+
+        # Load and fit the model
+        with open(f"../models/{read_model_name}", "rb") as h:
+            model = pickle.load(h)
+        model.fit(self.X_train_list[0], self.y_train)
+
+        # Extract feature importance scores
+        feature_limit = 30
+        all_cols = np.array(self.X_train_list[0].columns)
+        importances = model.feature_importances_
+        indices = np.argsort(importances)[::-1][:feature_limit]
+        std = np.std([tree.feature_importances_ for tree in model.estimators_], axis=0)
+
+        # Create the bar plot
+        font = {"size": 7}
+        plt.bar(
+            range(all_cols[:feature_limit].shape[0]),
+            importances[indices[:feature_limit]], yerr=std[indices[:feature_limit]],
+            align='center', color="#009e73"
+        )
+        plt.xticks(
+            range(all_cols[:feature_limit].shape[0]), all_cols[indices[:feature_limit]],
+            rotation=90, **font
+        )
+        plt.ylabel("Accumulated impurity decrease", **font)
+        plt.tight_layout()
+
+        if save_plot:
+            if not os.path.exists("../reports/figures/"):
+                os.mkdir("../reports/figures/")
+            plt.savefig(f"../reports/figures/{plot_name}", bbox_inches="tight")
+
+        if show:
+            plt.show()
+
+        return 0
